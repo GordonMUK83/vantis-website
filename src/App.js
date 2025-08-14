@@ -1,3 +1,4 @@
+import './App.css';
 import React, { useState, useEffect, useRef } from 'react';
 import { ShieldCheck, AlertTriangle, Mail, User, Building, ArrowRight, Loader2, RefreshCw, Menu, X, Briefcase, Users, BarChart2, Info, Phone, Star, TrendingUp, Code, Palette, Edit, Target, Zap, Handshake, Globe, TrendingDown, ChevronsRight, Building2, Rocket, Scale } from 'lucide-react';
 
@@ -771,3 +772,4 @@ const AuditPage = ({ navigate }) => {
 };
 
 export default App;
+
