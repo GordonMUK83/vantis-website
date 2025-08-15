@@ -5,6 +5,11 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        'vantis-green': '#45B930',
+        'vantis-blue': '#04ACD9',
+        'vantis-black': '#000000',
+      },
       animation: {
         blob: "blob 7s infinite",
       },
