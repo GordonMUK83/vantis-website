@@ -26,14 +26,11 @@ const FixedBackground = () => (
 
 // --- Logo Component ---
 const Logo = () => (
-    <span className="text-3xl font-bold text-vantis-black dark:text-white tracking-tighter relative">
-        Vant
-        <span className="relative">
-            i
-            <span className="absolute left-1/2 -translate-x-1/2 top-[-12px] h-2 w-2 bg-vantis-green rounded-full"></span>
-        </span>
-        s
-    </span>
+    <img 
+        src={`${process.env.PUBLIC_URL}/Vantis SVG Logo.svg`} 
+        alt="Vantis Logo" 
+        className="h-9 w-auto" // Adjust height as needed
+    />
 );
 
 
@@ -204,7 +201,7 @@ const ScrollytellingSection = () => {
         {icon: Palette, label: 'Graphic Design', text: 'Captivate your audience. Get stunning visuals that define your brand and make a lasting impression.'},
         {icon: Code, label: 'Tech Specialists', text: 'Build with the best. Access skilled developers and tech experts to bring your digital products to life.'},
     ];
-   
+
     const [activeIndex, setActiveIndex] = useState(0);
     const containerRef = useRef(null);
 
@@ -291,7 +288,7 @@ const HomePage = ({ navigate }) => {
 
             {/* Scrollytelling Section for Desktop */}
             <ScrollytellingSection />
-           
+
             {/* Simpler Grid for Mobile */}
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 md:hidden">
                  <AnimatedCard className="max-w-5xl mx-auto my-16">
@@ -543,12 +540,12 @@ const AboutPage = ({ navigate }) => (
 
 const ContactPage = ({ navigate }) => {
     const [submitted, setSubmitted] = useState(false);
-    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const form = e.target;
         const formData = new FormData(form);
-        
+
         try {
             const response = await fetch('https://formspree.io/f/xeozdnnp', {
                 method: 'POST',
@@ -723,7 +720,7 @@ const AuditPage = ({ navigate }) => {
             }
         }, 1500);
     };
-   
+
     const handleReset = () => {
         setAnswers({});
         setRiskScore(0);
@@ -799,7 +796,7 @@ const AuditPage = ({ navigate }) => {
                     ))}
                 </div>
             </section>
-           
+
             {!formSubmitted && (
                 <AnimatedCard>
                     <div className="text-center mt-8">
