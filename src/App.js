@@ -16,13 +16,24 @@ const AnimatedCard = ({ children, className, delay = 0 }) => {
     );
 };
 
-// New CSS-based background component. No JS scroll listeners.
 const FixedBackground = () => (
     <div className="fixed top-0 left-0 w-full h-screen -z-10">
-        <div className="absolute top-[-50px] left-[-50px] w-[200px] h-[200px] bg-blue-200/30 dark:bg-blue-900/20 rounded-full filter blur-3xl animate-blob"></div>
-        <div className="absolute top-[200px] right-[-50px] w-[300px] h-[300px] bg-indigo-200/30 dark:bg-indigo-900/20 rounded-full filter blur-3xl animate-blob animation-delay-2000"></div>
-        <div className="absolute bottom-[100px] left-[50px] w-[250px] h-[250px] bg-purple-200/30 dark:bg-purple-900/20 rounded-full filter blur-3xl animate-blob animation-delay-4000"></div>
+        <div className="absolute top-[-50px] left-[-50px] w-[200px] h-[200px] bg-vantis-blue/10 dark:bg-vantis-blue/10 rounded-full filter blur-3xl animate-blob"></div>
+        <div className="absolute top-[200px] right-[-50px] w-[300px] h-[300px] bg-vantis-green/10 dark:bg-vantis-green/10 rounded-full filter blur-3xl animate-blob animation-delay-2000"></div>
+        <div className="absolute bottom-[100px] left-[50px] w-[250px] h-[250px] bg-purple-200/10 dark:bg-purple-900/10 rounded-full filter blur-3xl animate-blob animation-delay-4000"></div>
     </div>
+);
+
+// --- Logo Component ---
+const Logo = () => (
+    <span className="text-3xl font-bold text-vantis-black dark:text-white tracking-tighter relative">
+        Vant
+        <span className="relative">
+            i
+            <span className="absolute left-1/2 -translate-x-1/2 top-[-12px] h-2 w-2 bg-vantis-green rounded-full"></span>
+        </span>
+        s
+    </span>
 );
 
 
@@ -57,8 +68,8 @@ const App = () => {
     };
 
     return (
-        <div className="bg-slate-50 dark:bg-slate-900 min-h-screen font-sans text-slate-800 dark:text-slate-200 antialiased relative">
-            {page === '/' ? <FixedBackground /> : <div className="absolute top-0 left-0 w-full h-[400px] bg-gradient-to-br from-blue-100 via-transparent to-transparent dark:from-blue-900/30 dark:via-slate-900 dark:to-slate-900 -z-10"></div>}
+        <div className="bg-slate-50 dark:bg-vantis-black min-h-screen font-sans text-slate-800 dark:text-slate-200 antialiased relative">
+            {page === '/' ? <FixedBackground /> : <div className="absolute top-0 left-0 w-full h-[400px] bg-gradient-to-br from-vantis-blue/20 via-transparent to-transparent dark:from-vantis-blue/20 dark:via-vantis-black dark:to-vantis-black -z-10"></div>}
             <Navbar navigate={navigate} page={page} isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
             <main className={`pt-24 transition-opacity duration-300 ${isExiting ? 'opacity-0' : 'opacity-100'}`}>
                 {renderPage()}
@@ -80,11 +91,11 @@ const Navbar = ({ navigate, page, isMobileMenuOpen, setIsMobileMenuOpen }) => {
     ];
 
     return (
-        <header className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl shadow-sm fixed top-0 left-0 right-0 z-50 border-b border-slate-200/80 dark:border-slate-800/80">
+        <header className="bg-white/60 dark:bg-vantis-black/60 backdrop-blur-xl shadow-sm fixed top-0 left-0 right-0 z-50 border-b border-slate-200/80 dark:border-slate-800/80">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-20">
-                    <button onClick={() => navigate('/')} className="text-3xl font-bold text-blue-600 dark:text-blue-400 cursor-pointer bg-transparent border-none p-0 tracking-tighter">
-                        Vantis
+                    <button onClick={() => navigate('/')} className="cursor-pointer bg-transparent border-none p-0">
+                        <Logo />
                     </button>
                     <nav className="hidden md:flex items-center space-x-1">
                         {navLinks.map(link => (
@@ -93,17 +104,17 @@ const Navbar = ({ navigate, page, isMobileMenuOpen, setIsMobileMenuOpen }) => {
                                 onClick={() => navigate(link.path)}
                                 className={`relative px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-300 cursor-pointer border-none ${
                                     page === link.path 
-                                    ? 'text-blue-600 dark:text-blue-300' 
-                                    : 'text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white'
+                                    ? 'text-vantis-blue dark:text-vantis-blue' 
+                                    : 'text-slate-600 hover:text-vantis-black dark:text-slate-300 dark:hover:text-white'
                                 }`}
                             >
                                 {link.label}
-                                {page === link.path && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-blue-500 rounded-full"></span>}
+                                {page === link.path && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-vantis-blue rounded-full"></span>}
                             </button>
                         ))}
                     </nav>
                      <div className="hidden md:block">
-                        <button onClick={() => navigate('/contact')} className="bg-emerald-500 text-white font-semibold py-2 px-5 rounded-lg hover:bg-emerald-600 transition-all duration-300 shadow-sm hover:shadow-lg hover:shadow-emerald-500/20 transform hover:-translate-y-0.5">
+                        <button onClick={() => navigate('/contact')} className="bg-vantis-green text-white font-semibold py-2 px-5 rounded-lg hover:bg-vantis-green/90 transition-all duration-300 shadow-sm hover:shadow-lg hover:shadow-vantis-green/20 transform hover:-translate-y-0.5">
                             Contact Us
                         </button>
                     </div>
@@ -115,7 +126,7 @@ const Navbar = ({ navigate, page, isMobileMenuOpen, setIsMobileMenuOpen }) => {
                 </div>
             </div>
             {isMobileMenuOpen && (
-                <div className="md:hidden bg-white dark:bg-slate-900/95 backdrop-blur-lg absolute top-full left-0 w-full pb-4 border-t border-slate-200 dark:border-slate-800">
+                <div className="md:hidden bg-white dark:bg-vantis-black/95 backdrop-blur-lg absolute top-full left-0 w-full pb-4 border-t border-slate-200 dark:border-slate-800">
                     <nav className="flex flex-col space-y-2 p-4">
                         {navLinks.map(link => (
                              <button
@@ -123,15 +134,15 @@ const Navbar = ({ navigate, page, isMobileMenuOpen, setIsMobileMenuOpen }) => {
                                 onClick={() => navigate(link.path)}
                                 className={`flex items-center px-4 py-3 rounded-lg text-base font-semibold transition-colors duration-200 cursor-pointer border-none text-left w-full ${
                                     page === link.path 
-                                    ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300' 
+                                    ? 'bg-vantis-blue/10 text-vantis-blue dark:bg-vantis-blue/20 dark:text-vantis-blue' 
                                     : 'bg-transparent text-slate-600 hover:bg-slate-200 dark:text-slate-300 dark:hover:bg-slate-800'
                                 }`}
                             >
-                                <link.icon className="mr-4 text-blue-500" size={20} />
+                                <link.icon className="mr-4 text-vantis-blue" size={20} />
                                 {link.label}
                             </button>
                         ))}
-                        <button onClick={() => navigate('/contact')} className="flex items-center px-4 py-3 mt-4 rounded-lg text-base font-semibold bg-emerald-500 text-white w-full">
+                        <button onClick={() => navigate('/contact')} className="flex items-center px-4 py-3 mt-4 rounded-lg text-base font-semibold bg-vantis-green text-white w-full">
                             <Phone className="mr-4" size={20} />
                             Contact Us
                         </button>
@@ -143,33 +154,33 @@ const Navbar = ({ navigate, page, isMobileMenuOpen, setIsMobileMenuOpen }) => {
 };
 
 const Footer = ({ navigate }) => (
-    <footer className="bg-white dark:bg-slate-950/50 mt-16 sm:mt-24 border-t border-slate-200 dark:border-slate-800">
+    <footer className="bg-white dark:bg-vantis-black/50 mt-16 sm:mt-24 border-t border-slate-200 dark:border-slate-800">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                 <div className="col-span-2 md:col-span-1">
-                    <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-2 tracking-tighter">Vantis</h3>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">Connecting UK companies with elite, vetted talent from across Africa.</p>
+                    <Logo />
+                    <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">Connecting UK companies with elite, vetted talent from across Africa.</p>
                 </div>
                 <div>
-                    <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-4">Navigate</h4>
+                    <h4 className="font-semibold text-vantis-black dark:text-slate-100 mb-4">Navigate</h4>
                     <ul className="space-y-3">
-                        <li><button onClick={() => navigate('/')} className="text-sm text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 transition-colors bg-transparent border-none p-0 cursor-pointer text-left">For Companies</button></li>
-                        <li><button onClick={() => navigate('/talent')} className="text-sm text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 transition-colors bg-transparent border-none p-0 cursor-pointer text-left">For Talent</button></li>
-                        <li><button onClick={() => navigate('/solution')} className="text-sm text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 transition-colors bg-transparent border-none p-0 cursor-pointer text-left">Our Solution</button></li>
+                        <li><button onClick={() => navigate('/')} className="text-sm text-slate-600 hover:text-vantis-blue dark:text-slate-400 dark:hover:text-vantis-blue transition-colors bg-transparent border-none p-0 cursor-pointer text-left">For Companies</button></li>
+                        <li><button onClick={() => navigate('/talent')} className="text-sm text-slate-600 hover:text-vantis-blue dark:text-slate-400 dark:hover:text-vantis-blue transition-colors bg-transparent border-none p-0 cursor-pointer text-left">For Talent</button></li>
+                        <li><button onClick={() => navigate('/solution')} className="text-sm text-slate-600 hover:text-vantis-blue dark:text-slate-400 dark:hover:text-vantis-blue transition-colors bg-transparent border-none p-0 cursor-pointer text-left">Our Solution</button></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-4">Company</h4>
+                    <h4 className="font-semibold text-vantis-black dark:text-slate-100 mb-4">Company</h4>
                      <ul className="space-y-3">
-                        <li><button onClick={() => navigate('/about')} className="text-sm text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 transition-colors bg-transparent border-none p-0 cursor-pointer text-left">About Us</button></li>
-                        <li><button onClick={() => navigate('/contact')} className="text-sm text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 transition-colors bg-transparent border-none p-0 cursor-pointer text-left">Contact</button></li>
-                        <li><button onClick={() => navigate('/audit')} className="text-sm text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 transition-colors bg-transparent border-none p-0 cursor-pointer text-left">IR35 Audit</button></li>
+                        <li><button onClick={() => navigate('/about')} className="text-sm text-slate-600 hover:text-vantis-blue dark:text-slate-400 dark:hover:text-vantis-blue transition-colors bg-transparent border-none p-0 cursor-pointer text-left">About Us</button></li>
+                        <li><button onClick={() => navigate('/contact')} className="text-sm text-slate-600 hover:text-vantis-blue dark:text-slate-400 dark:hover:text-vantis-blue transition-colors bg-transparent border-none p-0 cursor-pointer text-left">Contact</button></li>
+                        <li><button onClick={() => navigate('/audit')} className="text-sm text-slate-600 hover:text-vantis-blue dark:text-slate-400 dark:hover:text-vantis-blue transition-colors bg-transparent border-none p-0 cursor-pointer text-left">IR35 Audit</button></li>
                     </ul>
                 </div>
                  <div className="col-span-2 md:col-span-1">
-                    <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-4">Ready to Grow?</h4>
+                    <h4 className="font-semibold text-vantis-black dark:text-slate-100 mb-4">Ready to Grow?</h4>
                     <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">De-risk your hiring and unlock a world of compliant, cost-effective talent.</p>
-                    <button onClick={() => navigate('/contact')} className="w-full bg-blue-600 text-white font-semibold py-2.5 px-4 rounded-lg hover:bg-blue-700 transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-blue-600/30 transform hover:-translate-y-0.5">
+                    <button onClick={() => navigate('/contact')} className="w-full bg-vantis-blue text-white font-semibold py-2.5 px-4 rounded-lg hover:bg-vantis-blue/90 transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-vantis-blue/30 transform hover:-translate-y-0.5">
                         Contact Sales
                     </button>
                 </div>
@@ -228,15 +239,15 @@ const ScrollytellingSection = () => {
                     <div className="text-left relative h-48">
                         {services.map((service, index) => (
                             <div key={index} className={`transition-opacity duration-500 absolute w-full ${activeIndex === index ? 'opacity-100' : 'opacity-0'}`}>
-                                <h3 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">{service.label}</h3>
+                                <h3 className="text-4xl font-bold text-vantis-black dark:text-white mb-4">{service.label}</h3>
                                 <p className="text-lg text-slate-600 dark:text-slate-300">{service.text}</p>
                             </div>
                         ))}
                     </div>
                     <div className="grid grid-cols-3 gap-6">
                         {services.map((service, index) => (
-                            <button key={index} onClick={() => handleClick(index)} className={`bg-white/50 dark:bg-slate-800/30 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-slate-200/50 dark:border-slate-800/50 transition-all duration-500 group text-center w-full ${activeIndex === index ? 'opacity-100 scale-105 shadow-2xl shadow-blue-500/20' : 'opacity-40 scale-95 hover:opacity-100 hover:scale-100'}`}>
-                                <service.icon className={`mx-auto mb-3 h-8 w-8 transition-colors duration-500 ${activeIndex === index ? 'text-blue-500 dark:text-blue-400' : 'text-slate-500 group-hover:text-blue-500'}`} strokeWidth={1.5} /> 
+                            <button key={index} onClick={() => handleClick(index)} className={`bg-white/50 dark:bg-slate-800/30 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-slate-200/50 dark:border-slate-800/50 transition-all duration-500 group text-center w-full ${activeIndex === index ? 'opacity-100 scale-105 shadow-2xl shadow-vantis-blue/20' : 'opacity-40 scale-95 hover:opacity-100 hover:scale-100'}`}>
+                                <service.icon className={`mx-auto mb-3 h-8 w-8 transition-colors duration-500 ${activeIndex === index ? 'text-vantis-blue dark:text-vantis-blue' : 'text-slate-500 group-hover:text-vantis-blue'}`} strokeWidth={1.5} /> 
                                 <span className={`text-sm font-semibold transition-colors duration-500 ${activeIndex === index ? 'text-slate-700 dark:text-slate-200' : 'text-slate-500 group-hover:text-slate-700 dark:group-hover:text-slate-200'}`}>{service.label}</span>
                             </button>
                         ))}
@@ -261,12 +272,12 @@ const HomePage = ({ navigate }) => {
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-16">
                 <section className="text-center">
                     <AnimatedCard>
-                        <div className="inline-block bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 font-semibold px-4 py-1.5 rounded-full text-sm mb-6 shadow-sm">
+                        <div className="inline-block bg-vantis-blue/10 dark:bg-vantis-blue/20 text-vantis-blue dark:text-vantis-blue font-semibold px-4 py-1.5 rounded-full text-sm mb-6 shadow-sm">
                             For UK Companies
                         </div>
                     </AnimatedCard>
                     <AnimatedCard delay={100}>
-                        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white mb-6 leading-tight tracking-tighter">
+                        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-vantis-black dark:text-white mb-6 leading-tight tracking-tighter">
                             Increase Your Output, Not Your Payroll.
                         </h1>
                     </AnimatedCard>
@@ -294,7 +305,7 @@ const HomePage = ({ navigate }) => {
                             {icon: Code, label: 'Tech Specialists'},
                         ].map((item, index) => (
                              <button key={index} onClick={handleMobileServiceClick} className="bg-white/50 dark:bg-slate-800/30 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-slate-200/50 dark:border-slate-800/50 w-full text-center">
-                                <item.icon className="mx-auto text-blue-500 dark:text-blue-400 mb-3 h-8 w-8" strokeWidth={1.5} /> 
+                                <item.icon className="mx-auto text-vantis-blue dark:text-vantis-blue mb-3 h-8 w-8" strokeWidth={1.5} /> 
                                 <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">{item.label}</span>
                             </button>
                         ))}
@@ -302,11 +313,11 @@ const HomePage = ({ navigate }) => {
                 </AnimatedCard>
             </div>
 
-            <div id="vantis-advantage" className="bg-white dark:bg-slate-950/50 py-24 sm:py-32">
+            <div id="vantis-advantage" className="bg-white dark:bg-vantis-black/50 py-24 sm:py-32">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <section className="text-center max-w-4xl mx-auto">
                         <AnimatedCard>
-                            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mb-6 tracking-tighter">
+                            <h2 className="text-3xl sm:text-4xl font-extrabold text-vantis-black dark:text-white mb-6 tracking-tighter">
                                 The Vantis Advantage in Action
                             </h2>
                             <p className="text-lg text-slate-600 dark:text-slate-300 mb-12">
@@ -314,7 +325,7 @@ const HomePage = ({ navigate }) => {
                             </p>
                         </AnimatedCard>
                         <div className="grid md:grid-cols-2 gap-8 text-left">
-                            <AnimatedCard delay={200} className="bg-gradient-to-br from-emerald-400 to-green-600 text-white p-8 rounded-2xl shadow-2xl shadow-emerald-500/30">
+                            <AnimatedCard delay={200} className="bg-gradient-to-br from-vantis-green to-emerald-600 text-white p-8 rounded-2xl shadow-2xl shadow-vantis-green/30">
                                 <p className="text-6xl font-bold">60%</p>
                                 <p className="text-lg font-semibold">Potential Payroll Cost Reduction</p>
                                 <p className="text-sm opacity-80 mt-2">Escape crippling UK employer NI contributions and inflated salary demands. Our model provides a more sustainable path to scaling your team.</p>
@@ -329,11 +340,11 @@ const HomePage = ({ navigate }) => {
                 </div>
             </div>
 
-            <div className="bg-slate-50 dark:bg-slate-900 py-24 sm:py-32">
+            <div className="bg-slate-50 dark:bg-vantis-black py-24 sm:py-32">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <section className="text-center max-w-3xl mx-auto">
                         <AnimatedCard>
-                            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mb-6 tracking-tighter">
+                            <h2 className="text-3xl sm:text-4xl font-extrabold text-vantis-black dark:text-white mb-6 tracking-tighter">
                                 Ready to Build a Smarter, Safer Team?
                             </h2>
                             <p className="text-lg text-slate-600 dark:text-slate-300 mb-10">
@@ -345,13 +356,13 @@ const HomePage = ({ navigate }) => {
                                 <AlertTriangle className="mr-2" size={20} />
                                 Assess Your IR35 Risk
                             </button>
-                            <button onClick={() => navigate('/solution')} className="w-full sm:w-auto bg-slate-800 text-white font-bold py-4 px-8 rounded-xl hover:bg-black dark:bg-slate-200 dark:text-slate-900 dark:hover:bg-white transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                            <button onClick={() => navigate('/solution')} className="w-full sm:w-auto bg-slate-800 text-white font-bold py-4 px-8 rounded-xl hover:bg-black dark:bg-slate-200 dark:text-vantis-black dark:hover:bg-white transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
                                 Discover Our Solution
                             </button>
                         </AnimatedCard>
                          <AnimatedCard delay={300} className="mt-12">
                             <p className="text-slate-500 dark:text-slate-400">Are you one of Africa's top professionals?</p>
-                            <button onClick={() => navigate('/talent')} className="font-semibold text-blue-600 dark:text-blue-400 hover:underline bg-transparent border-none p-0 cursor-pointer group">
+                            <button onClick={() => navigate('/talent')} className="font-semibold text-vantis-blue dark:text-vantis-blue hover:underline bg-transparent border-none p-0 cursor-pointer group">
                                 Connect with premier UK companies <ArrowRight className="inline h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
                             </button>
                         </AnimatedCard>
@@ -366,12 +377,12 @@ const TalentPage = ({ navigate }) => (
      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
         <section className="text-center">
              <AnimatedCard>
-                <div className="inline-block bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 font-semibold px-4 py-1.5 rounded-full text-sm mb-6 shadow-sm">
+                <div className="inline-block bg-vantis-green/10 dark:bg-vantis-green/20 text-vantis-green dark:text-vantis-green font-semibold px-4 py-1.5 rounded-full text-sm mb-6 shadow-sm">
                     For Africa's Top Professionals
                 </div>
             </AnimatedCard>
             <AnimatedCard delay={100}>
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white mb-6 leading-tight tracking-tighter">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-vantis-black dark:text-white mb-6 leading-tight tracking-tighter">
                     Your Talent Deserves a Global Stage.
                 </h1>
             </AnimatedCard>
@@ -381,7 +392,7 @@ const TalentPage = ({ navigate }) => (
                 </p>
             </AnimatedCard>
              <AnimatedCard className="max-w-4xl mx-auto my-16" delay={300}>
-                 <p className="text-xl font-semibold mb-6 text-slate-800 dark:text-slate-100">We are actively recruiting specialists in:</p>
+                 <p className="text-xl font-semibold mb-6 text-vantis-black dark:text-slate-100">We are actively recruiting specialists in:</p>
                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 text-center">
                     {[
                         {icon: Star, label: 'Social Media'},
@@ -391,21 +402,21 @@ const TalentPage = ({ navigate }) => (
                         {icon: Palette, label: 'Graphic Design'},
                         {icon: Code, label: 'Tech Specialists'},
                     ].map((item, index) => (
-                         <div key={index} className="bg-white dark:bg-slate-800/50 p-6 rounded-xl shadow-lg hover:shadow-xl hover:shadow-blue-500/10 dark:hover:shadow-blue-400/10 transition-all duration-300 transform hover:-translate-y-1">
-                            <item.icon className="mx-auto text-green-500 dark:text-green-400 mb-3 h-8 w-8" strokeWidth={1.5} /> 
+                         <div key={index} className="bg-white dark:bg-slate-800/50 p-6 rounded-xl shadow-lg hover:shadow-xl hover:shadow-vantis-blue/10 dark:hover:shadow-vantis-blue/10 transition-all duration-300 transform hover:-translate-y-1">
+                            <item.icon className="mx-auto text-vantis-green dark:text-vantis-green mb-3 h-8 w-8" strokeWidth={1.5} /> 
                             <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">{item.label}</span>
                         </div>
                     ))}
                 </div>
             </AnimatedCard>
             <AnimatedCard className="flex flex-col sm:flex-row justify-center items-center gap-4" delay={400}>
-                <button onClick={() => navigate('/contact')} className="w-full sm:w-auto bg-gradient-to-br from-blue-600 to-indigo-600 text-white font-bold py-4 px-8 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl hover:shadow-blue-600/30">
+                <button onClick={() => navigate('/contact')} className="w-full sm:w-auto bg-gradient-to-br from-vantis-blue to-cyan-500 text-white font-bold py-4 px-8 rounded-xl hover:from-vantis-blue/90 hover:to-cyan-500/90 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl hover:shadow-vantis-blue/30">
                     Join Our Elite Talent Pool
                 </button>
             </AnimatedCard>
              <AnimatedCard className="mt-16" delay={500}>
                 <p className="text-slate-500 dark:text-slate-400">Are you a UK company looking to hire?</p>
-                <button onClick={() => navigate('/')} className="font-semibold text-blue-600 dark:text-blue-400 hover:underline bg-transparent border-none p-0 cursor-pointer group">
+                <button onClick={() => navigate('/')} className="font-semibold text-vantis-blue dark:text-vantis-blue hover:underline bg-transparent border-none p-0 cursor-pointer group">
                     Return to the company homepage <ArrowRight className="inline h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
                 </button>
             </AnimatedCard>
@@ -417,7 +428,7 @@ const SolutionPage = ({ navigate }) => (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
         <div className="text-center mb-16">
             <AnimatedCard>
-                <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white mb-4 tracking-tighter">The Vantis EOR Solution</h1>
+                <h1 className="text-4xl sm:text-5xl font-extrabold text-vantis-black dark:text-white mb-4 tracking-tighter">The Vantis EOR Solution</h1>
             </AnimatedCard>
             <AnimatedCard delay={100}>
                 <p className="max-w-3xl mx-auto text-lg lg:text-xl text-slate-600 dark:text-slate-300">We solve the two biggest problems facing UK hiring: soaring costs and contractor compliance risk.</p>
@@ -434,7 +445,7 @@ const SolutionPage = ({ navigate }) => (
                 </ul>
             </AnimatedCard>
             <div className="md:sticky md:top-32">
-                <AnimatedCard className="bg-gradient-to-br from-blue-500 to-indigo-600 text-white p-8 rounded-2xl shadow-2xl shadow-blue-500/30" delay={300}>
+                <AnimatedCard className="bg-gradient-to-br from-vantis-blue to-cyan-500 text-white p-8 rounded-2xl shadow-2xl shadow-vantis-blue/30" delay={300}>
                     <h3 className="text-2xl font-bold mb-6">The Vantis Way: Strategic Advantage</h3>
                      <ul className="space-y-4">
                         <li className="flex items-start"><ShieldCheck className="h-6 w-6 mr-4 mt-0.5 flex-shrink-0" /><span><strong>Cost-Effective Talent:</strong> Access an elite pool of UK-vetted African professionals at a fraction of the UK cost.</span></li>
@@ -452,12 +463,12 @@ const AboutPage = ({ navigate }) => (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
         <div className="max-w-5xl mx-auto">
             <AnimatedCard className="text-center">
-                <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white mb-6 tracking-tighter">Our Story</h1>
+                <h1 className="text-4xl sm:text-5xl font-extrabold text-vantis-black dark:text-white mb-6 tracking-tighter">Our Story</h1>
             </AnimatedCard>
 
             <AnimatedCard delay={100}>
                 <div className="mt-8 text-center p-8 bg-white dark:bg-slate-800/50 rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-200 dark:border-slate-800">
-                    <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4">The Problem We Solve</h2>
+                    <h2 className="text-2xl font-bold text-vantis-black dark:text-slate-100 mb-4">The Problem We Solve</h2>
                     <p className="text-lg text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
                         UK businesses are caught in a perfect storm: a hostile domestic hiring market with soaring costs, and the ever-present legal threat of IR35 non-compliance when looking abroad. Companies need to grow, but the traditional paths are either prohibitively expensive or dangerously risky.
                     </p>
@@ -467,21 +478,21 @@ const AboutPage = ({ navigate }) => (
             <AnimatedCard delay={200}>
                  <div className="my-16 flex flex-col md:flex-row items-center justify-center gap-8 text-center">
                     <div className="p-6 bg-white dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-800 shadow-lg text-center">
-                        <h3 className="font-bold text-lg text-blue-600 dark:text-blue-400">UK Companies</h3>
+                        <h3 className="font-bold text-lg text-vantis-blue dark:text-vantis-blue">UK Companies</h3>
                         <p className="text-sm text-slate-500">Need growth, face high costs & risk</p>
                     </div>
-                     <div className="text-blue-300 dark:text-blue-700 transform md:-rotate-90">
+                     <div className="text-vantis-blue/30 dark:text-vantis-blue/70 transform md:-rotate-90">
                         <ChevronsRight size={48} className="animate-pulse" />
                     </div>
                     <div className="p-6 bg-white dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-800 shadow-lg text-center">
-                        <h3 className="font-bold text-lg text-green-600 dark:text-green-400">African Talent</h3>
+                        <h3 className="font-bold text-lg text-vantis-green dark:text-vantis-green">African Talent</h3>
                         <p className="text-sm text-slate-500">Elite skills, seeking global opportunities</p>
                     </div>
                 </div>
             </AnimatedCard>
 
             <AnimatedCard delay={300}>
-                <div className="p-8 bg-gradient-to-br from-blue-500 to-indigo-600 text-white rounded-2xl shadow-2xl shadow-blue-500/30 text-center">
+                <div className="p-8 bg-gradient-to-br from-vantis-blue to-cyan-500 text-white rounded-2xl shadow-2xl shadow-vantis-blue/30 text-center">
                     <h2 className="text-3xl font-bold mb-4">Our Mission: The Vantis Bridge</h2>
                     <p className="text-lg max-w-3xl mx-auto">
                         To build a direct, compliant, and powerful bridge between these two worlds. We meticulously vet every candidate and operate as the legal Employer of Record, absorbing 100% of the compliance risk. For our clients, this means confident, affordable growth. For our talent, it means stable, secure, and well-paid careers that change lives.
@@ -491,36 +502,36 @@ const AboutPage = ({ navigate }) => (
 
             <AnimatedCard delay={400}>
                 <div className="mt-16 text-center">
-                    <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-12 tracking-tight">Our Impact: Aligning Growth with Global Goals</h2>
+                    <h2 className="text-3xl font-bold text-vantis-black dark:text-white mb-12 tracking-tight">Our Impact: Aligning Growth with Global Goals</h2>
                     <div className="grid md:grid-cols-3 gap-8">
                         <div className="text-center p-6 bg-white dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-800 shadow-lg group relative">
-                            <div className="inline-flex items-center justify-center p-4 bg-blue-100 dark:bg-blue-900/50 rounded-full mb-4">
-                                <Briefcase className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                            <div className="inline-flex items-center justify-center p-4 bg-vantis-blue/10 dark:bg-vantis-blue/20 rounded-full mb-4">
+                                <Briefcase className="h-8 w-8 text-vantis-blue dark:text-vantis-blue" />
                             </div>
-                            <h3 className="font-bold text-lg text-slate-800 dark:text-slate-100 mb-2">SDG 8: Decent Work</h3>
+                            <h3 className="font-bold text-lg text-vantis-black dark:text-slate-100 mb-2">SDG 8: Decent Work</h3>
                             <p className="text-sm text-slate-500 dark:text-slate-400">We provide stable, formal employment, creating decent work and fostering economic growth in African communities.</p>
                              <div className="absolute bottom-full mb-2 w-full left-0 flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                <span className="bg-slate-800 text-white text-xs rounded py-1 px-2">Decent Work & Economic Growth</span>
+                                <span className="bg-vantis-black text-white text-xs rounded py-1 px-2">Decent Work & Economic Growth</span>
                             </div>
                         </div>
                         <div className="text-center p-6 bg-white dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-800 shadow-lg group relative">
-                            <div className="inline-flex items-center justify-center p-4 bg-blue-100 dark:bg-blue-900/50 rounded-full mb-4">
-                                <TrendingDown className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                            <div className="inline-flex items-center justify-center p-4 bg-vantis-blue/10 dark:bg-vantis-blue/20 rounded-full mb-4">
+                                <TrendingDown className="h-8 w-8 text-vantis-blue dark:text-vantis-blue" />
                             </div>
-                            <h3 className="font-bold text-lg text-slate-800 dark:text-slate-100 mb-2">SDG 10: Reduced Inequalities</h3>
+                            <h3 className="font-bold text-lg text-vantis-black dark:text-slate-100 mb-2">SDG 10: Reduced Inequalities</h3>
                             <p className="text-sm text-slate-500 dark:text-slate-400">Our model reduces inequality by connecting the UK's high-value job market with Africa's professional talent pool.</p>
                              <div className="absolute bottom-full mb-2 w-full left-0 flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                <span className="bg-slate-800 text-white text-xs rounded py-1 px-2">Reduced Inequalities</span>
+                                <span className="bg-vantis-black text-white text-xs rounded py-1 px-2">Reduced Inequalities</span>
                             </div>
                         </div>
                         <div className="text-center p-6 bg-white dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-800 shadow-lg group relative">
-                            <div className="inline-flex items-center justify-center p-4 bg-blue-100 dark:bg-blue-900/50 rounded-full mb-4">
-                                <Globe className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                            <div className="inline-flex items-center justify-center p-4 bg-vantis-blue/10 dark:bg-vantis-blue/20 rounded-full mb-4">
+                                <Globe className="h-8 w-8 text-vantis-blue dark:text-vantis-blue" />
                             </div>
-                            <h3 className="font-bold text-lg text-slate-800 dark:text-slate-100 mb-2">ESG: Social Responsibility</h3>
+                            <h3 className="font-bold text-lg text-vantis-black dark:text-slate-100 mb-2">ESG: Social Responsibility</h3>
                             <p className="text-sm text-slate-500 dark:text-slate-400">Partnering with Vantis demonstrates a clear commitment to the 'Social' pillar of ESG through ethical, impactful hiring.</p>
                              <div className="absolute bottom-full mb-2 w-full left-0 flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                <span className="bg-slate-800 text-white text-xs rounded py-1 px-2">Environmental, Social, Governance</span>
+                                <span className="bg-vantis-black text-white text-xs rounded py-1 px-2">Environmental, Social, Governance</span>
                             </div>
                         </div>
                     </div>
@@ -561,7 +572,7 @@ const ContactPage = ({ navigate }) => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
             <div className="max-w-2xl mx-auto text-center">
                 <AnimatedCard>
-                    <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white mb-4 tracking-tighter">Get in Touch</h1>
+                    <h1 className="text-4xl sm:text-5xl font-extrabold text-vantis-black dark:text-white mb-4 tracking-tighter">Get in Touch</h1>
                 </AnimatedCard>
                 <AnimatedCard delay={100}>
                     <p className="text-lg text-slate-600 dark:text-slate-300 mb-10">Whether you're a company looking to hire or a professional seeking your next role, we'd love to hear from you.</p>
@@ -569,7 +580,7 @@ const ContactPage = ({ navigate }) => {
 
                 <AnimatedCard delay={200}>
                     {submitted ? (
-                        <div className="bg-green-100 dark:bg-green-900/50 border border-green-200 dark:border-green-800 text-green-800 dark:text-green-200 px-6 py-8 rounded-2xl text-center shadow-lg">
+                        <div className="bg-vantis-green/10 dark:bg-vantis-green/20 border border-vantis-green/20 dark:border-vantis-green/30 text-vantis-green dark:text-vantis-green px-6 py-8 rounded-2xl text-center shadow-lg">
                             <h3 className="font-bold text-2xl mb-2">Thank You!</h3>
                             <p>Your message has been sent. We'll be in touch shortly.</p>
                         </div>
@@ -578,15 +589,15 @@ const ContactPage = ({ navigate }) => {
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div>
                                     <label htmlFor="name" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Full Name</label>
-                                    <input type="text" id="name" name="name" required className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-shadow" />
+                                    <input type="text" id="name" name="name" required className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-vantis-black/50 focus:ring-2 focus:ring-vantis-blue focus:outline-none transition-shadow" />
                                 </div>
                                  <div>
                                     <label htmlFor="email" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Email Address</label>
-                                    <input type="email" id="email" name="email" required className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-shadow" />
+                                    <input type="email" id="email" name="email" required className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-vantis-black/50 focus:ring-2 focus:ring-vantis-blue focus:outline-none transition-shadow" />
                                 </div>
                                 <div>
                                     <label htmlFor="iam" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">I am a...</label>
-                                    <select id="iam" name="role" className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-shadow">
+                                    <select id="iam" name="role" className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-vantis-black/50 focus:ring-2 focus:ring-vantis-blue focus:outline-none transition-shadow">
                                         <option>Company looking to hire</option>
                                         <option>Professional looking for a role</option>
                                         <option>Other</option>
@@ -594,11 +605,11 @@ const ContactPage = ({ navigate }) => {
                                 </div>
                                 <div>
                                     <label htmlFor="message" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Message</label>
-                                    <textarea id="message" name="message" rows="4" required className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-shadow"></textarea>
+                                    <textarea id="message" name="message" rows="4" required className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-vantis-black/50 focus:ring-2 focus:ring-vantis-blue focus:outline-none transition-shadow"></textarea>
                                 </div>
-                                <div className="p-4 bg-slate-100 dark:bg-slate-900/50 rounded-lg flex items-center justify-between">
+                                <div className="p-4 bg-slate-100 dark:bg-vantis-black/50 rounded-lg flex items-center justify-between">
                                     <div className="flex items-center">
-                                        <input id="captcha" type="checkbox" className="h-6 w-6 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                                        <input id="captcha" type="checkbox" className="h-6 w-6 rounded border-gray-300 text-vantis-blue focus:ring-vantis-blue" />
                                         <label htmlFor="captcha" className="ml-3 text-sm text-slate-600 dark:text-slate-300">I'm not a robot</label>
                                     </div>
                                     <div className="text-xs text-slate-400">
@@ -609,7 +620,7 @@ const ContactPage = ({ navigate }) => {
                                     </div>
                                 </div>
                                 <div>
-                                    <button type="submit" className="w-full bg-gradient-to-br from-blue-600 to-indigo-600 text-white font-bold py-3.5 px-8 rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl hover:shadow-blue-600/30">
+                                    <button type="submit" className="w-full bg-gradient-to-br from-vantis-blue to-cyan-500 text-white font-bold py-3.5 px-8 rounded-lg hover:from-vantis-blue/90 hover:to-cyan-500/90 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl hover:shadow-vantis-blue/30">
                                         Send Message
                                     </button>
                                 </div>
@@ -745,9 +756,9 @@ const AuditPage = ({ navigate }) => {
         };
         return { 
             level: 'POTENTIAL EXPOSURE', 
-            color: 'text-green-500', 
-            bgColor: 'bg-green-500/10 dark:bg-green-900/20', 
-            borderColor: 'border-green-500/20 dark:border-green-500/30', 
+            color: 'text-vantis-green', 
+            bgColor: 'bg-vantis-green/10 dark:bg-vantis-green/20', 
+            borderColor: 'border-vantis-green/20 dark:border-vantis-green/30', 
             description: "While your arrangements show some signs of compliance, IR35 is notoriously complex. Even a single contract change or shift in working practices could unknowingly move you into a higher risk category. Complacency is your biggest enemy." 
         };
     };
@@ -756,9 +767,9 @@ const AuditPage = ({ navigate }) => {
 
     const QuizQuestion = ({ question, answer, onAnswer, isUnanswered }) => (
         <div className={`bg-white dark:bg-slate-800/50 p-6 rounded-2xl border ${isUnanswered ? 'border-red-500' : 'border-slate-200 dark:border-slate-800'} shadow-lg hover:shadow-xl transition-all duration-300`}>
-            <p className="text-lg font-medium text-slate-800 dark:text-slate-100 mb-5">{question}</p>
+            <p className="text-lg font-medium text-vantis-black dark:text-slate-100 mb-5">{question}</p>
             <div className="flex items-center space-x-4">
-                <button onClick={() => onAnswer(true)} className={`flex-1 py-3 px-4 rounded-lg font-semibold transition-all duration-200 text-base shadow-md ${answer === true ? 'bg-blue-600 text-white ring-2 ring-blue-300 dark:ring-blue-500 scale-105' : 'bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-blue-50 dark:hover:bg-slate-600'}`}>Yes</button>
+                <button onClick={() => onAnswer(true)} className={`flex-1 py-3 px-4 rounded-lg font-semibold transition-all duration-200 text-base shadow-md ${answer === true ? 'bg-vantis-blue text-white ring-2 ring-vantis-blue/50 scale-105' : 'bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-blue-50 dark:hover:bg-slate-600'}`}>Yes</button>
                 <button onClick={() => onAnswer(false)} className={`flex-1 py-3 px-4 rounded-lg font-semibold transition-all duration-200 text-base shadow-md ${answer === false ? 'bg-red-600 text-white ring-2 ring-red-300 dark:ring-red-500 scale-105' : 'bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-red-50 dark:hover:bg-slate-600'}`}>No</button>
             </div>
         </div>
@@ -769,7 +780,7 @@ const AuditPage = ({ navigate }) => {
             <section id="risk-audit-start" className="mb-16 sm:mb-24">
                 <div className="text-center mb-12">
                      <AnimatedCard>
-                        <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white mb-4 tracking-tighter">The HMRC Compliance Stress Test</h1>
+                        <h1 className="text-4xl sm:text-5xl font-extrabold text-vantis-black dark:text-white mb-4 tracking-tighter">The HMRC Compliance Stress Test</h1>
                     </AnimatedCard>
                     <AnimatedCard delay={100}>
                         <p className="max-w-2xl mx-auto text-lg text-slate-600 dark:text-slate-300">These aren't our questions; they're based on HMRC's own checklist. If you answer 'Yes' to most of these, you are likely operating outside the rules and are already at high risk of an investigation.</p>
@@ -791,9 +802,9 @@ const AuditPage = ({ navigate }) => {
            
             {!formSubmitted && (
                 <AnimatedCard>
-                    <div className="text-center">
+                    <div className="text-center mt-8">
                         {showIncompleteWarning && <p className="text-red-500 font-semibold mb-4">Please answer all questions to see your results.</p>}
-                        <button onClick={handleShowForm} className="bg-gradient-to-br from-blue-600 to-indigo-600 text-white font-bold py-4 px-10 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105 text-lg shadow-lg hover:shadow-xl hover:shadow-blue-600/30">
+                        <button onClick={handleShowForm} className="bg-gradient-to-br from-vantis-blue to-cyan-500 text-white font-bold py-4 px-10 rounded-xl hover:from-vantis-blue/90 hover:to-cyan-500/90 transition-all duration-300 transform hover:scale-105 text-lg shadow-lg hover:shadow-xl hover:shadow-vantis-blue/30">
                             Get My Results
                         </button>
                     </div>
@@ -802,13 +813,13 @@ const AuditPage = ({ navigate }) => {
 
             {formSubmitted && !showResults && (
                 <AnimatedCard>
-                <section id="get-results-audit" className="bg-white dark:bg-slate-800/50 p-8 sm:p-10 rounded-2xl shadow-2xl max-w-2xl mx-auto text-center border border-slate-200 dark:border-slate-800">
-                    <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-3">Don't Look Away. See Your Results.</h2>
+                <section id="get-results-audit" className="bg-white dark:bg-slate-800/50 p-8 sm:p-10 rounded-2xl shadow-2xl max-w-2xl mx-auto text-center border border-slate-200 dark:border-slate-800 mt-16">
+                    <h2 className="text-3xl font-bold text-vantis-black dark:text-white mb-3">Don't Look Away. See Your Results.</h2>
                     <p className="text-slate-600 dark:text-slate-400 mb-8">Ignorance is not a defence in an HMRC investigation. Enter your details to see the unvarnished truth about your current liability.</p>
                     <form onSubmit={calculateRisk} className="space-y-5" noValidate>
-                        <div className="relative"><User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" /><input type="text" name="name" placeholder="Your Name" required value={formData.name} onChange={handleInputChange} className="w-full pl-12 pr-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-shadow" /></div>
-                        <div className="relative"><Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" /><input type="email" name="email" placeholder="Work Email" required value={formData.email} onChange={handleInputChange} className="w-full pl-12 pr-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-shadow" /></div>
-                        <div className="relative"><Building className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" /><input type="text" name="company" placeholder="Company Name (Optional)" value={formData.company} onChange={handleInputChange} className="w-full pl-12 pr-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-shadow" /></div>
+                        <div className="relative"><User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" /><input type="text" name="name" placeholder="Your Name" required value={formData.name} onChange={handleInputChange} className="w-full pl-12 pr-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-vantis-black/50 focus:ring-2 focus:ring-vantis-blue focus:outline-none transition-shadow" /></div>
+                        <div className="relative"><Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" /><input type="email" name="email" placeholder="Work Email" required value={formData.email} onChange={handleInputChange} className="w-full pl-12 pr-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-vantis-black/50 focus:ring-2 focus:ring-vantis-blue focus:outline-none transition-shadow" /></div>
+                        <div className="relative"><Building className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" /><input type="text" name="company" placeholder="Company Name (Optional)" value={formData.company} onChange={handleInputChange} className="w-full pl-12 pr-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-vantis-black/50 focus:ring-2 focus:ring-vantis-blue focus:outline-none transition-shadow" /></div>
                         <button type="submit" disabled={isCalculating} className="w-full bg-gradient-to-br from-red-500 to-orange-500 text-white font-bold py-3.5 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl hover:shadow-red-500/30 disabled:from-red-400 disabled:to-orange-400 disabled:cursor-not-allowed disabled:scale-100 disabled:shadow-md flex items-center justify-center">{isCalculating ? <><Loader2 className="animate-spin mr-3 h-5 w-5" />Calculating...</> : "Reveal My Risk - I Understand the Stakes"}</button>
                     </form>
                 </section>
@@ -820,14 +831,14 @@ const AuditPage = ({ navigate }) => {
                 <section id="results-section-audit" className="mt-16 sm:mt-24">
                     <div className={`max-w-3xl mx-auto p-8 sm:p-12 rounded-2xl border-2 shadow-2xl ${riskInfo.bgColor} ${riskInfo.borderColor}`}>
                          <div className="text-center">
-                            <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-100">Your IR35 Compliance Result</h3>
+                            <h3 className="text-xl font-semibold text-vantis-black dark:text-slate-100">Your IR35 Compliance Result</h3>
                             <p className={`text-6xl sm:text-7xl font-extrabold my-4 ${riskInfo.color}`}>{riskInfo.level}</p>
                             <p className="text-lg text-slate-700 dark:text-slate-300 max-w-xl mx-auto" dangerouslySetInnerHTML={{ __html: riskInfo.description }}></p>
                         </div>
                         <div className="text-center mt-8"><button onClick={handleReset} className="bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold py-2.5 px-6 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors duration-300 inline-flex items-center shadow-sm"><RefreshCw className="mr-2 h-4 w-4" />Start Over</button></div>
                     </div>
                     <div className="mt-12 text-center">
-                        <button onClick={() => navigate('/contact')} className="bg-gradient-to-br from-green-500 to-emerald-500 text-white font-bold py-4 px-10 rounded-xl hover:from-green-600 hover:to-emerald-600 transition-all duration-300 inline-block transform hover:scale-105 text-lg shadow-lg hover:shadow-xl hover:shadow-green-500/30">
+                        <button onClick={() => navigate('/contact')} className="bg-gradient-to-br from-vantis-green to-emerald-600 text-white font-bold py-4 px-10 rounded-xl hover:from-vantis-green/90 hover:to-emerald-600/90 transition-all duration-300 inline-block transform hover:scale-105 text-lg shadow-lg hover:shadow-xl hover:shadow-vantis-green/30">
                             Contact Us to De-Risk Your Hiring
                         </button>
                     </div>
