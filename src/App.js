@@ -193,7 +193,7 @@ const ScrollytellingSection = () => {
         {icon: Palette, label: 'Graphic Design', text: 'Captivate your audience. Get stunning visuals that define your brand and make a lasting impression.'},
         {icon: Code, label: 'Tech Specialists', text: 'Build with the best. Access skilled developers and tech experts to bring your digital products to life.'},
     ];
-    
+   
     const [activeIndex, setActiveIndex] = useState(0);
     const containerRef = useRef(null);
 
@@ -280,7 +280,7 @@ const HomePage = ({ navigate }) => {
 
             {/* Scrollytelling Section for Desktop */}
             <ScrollytellingSection />
-            
+           
             {/* Simpler Grid for Mobile */}
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 md:hidden">
                  <AnimatedCard className="max-w-5xl mx-auto my-16">
@@ -383,7 +383,7 @@ const TalentPage = ({ navigate }) => (
              <AnimatedCard className="max-w-4xl mx-auto my-16" delay={300}>
                  <p className="text-xl font-semibold mb-6 text-slate-800 dark:text-slate-100">We are actively recruiting specialists in:</p>
                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 text-center">
-                     {[
+                    {[
                         {icon: Star, label: 'Social Media'},
                         {icon: Briefcase, label: 'Virtual Assistants'},
                         {icon: Edit, label: 'Data Entry'},
@@ -533,9 +533,28 @@ const AboutPage = ({ navigate }) => (
 const ContactPage = ({ navigate }) => {
     const [submitted, setSubmitted] = useState(false);
     
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setSubmitted(true);
+        const form = e.target;
+        const formData = new FormData(form);
+        
+        try {
+            const response = await fetch('https://formspree.io/f/xeozdnnp', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                setSubmitted(true);
+            } else {
+                alert('There was an error sending your message. Please try again.');
+            }
+        } catch (error) {
+            alert('There was a network error. Please try again.');
+        }
     };
 
     return (
@@ -559,15 +578,15 @@ const ContactPage = ({ navigate }) => {
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div>
                                     <label htmlFor="name" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Full Name</label>
-                                    <input type="text" id="name" required className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-shadow" />
+                                    <input type="text" id="name" name="name" required className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-shadow" />
                                 </div>
                                  <div>
                                     <label htmlFor="email" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Email Address</label>
-                                    <input type="email" id="email" required className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-shadow" />
+                                    <input type="email" id="email" name="email" required className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-shadow" />
                                 </div>
                                 <div>
                                     <label htmlFor="iam" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">I am a...</label>
-                                    <select id="iam" className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-shadow">
+                                    <select id="iam" name="role" className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-shadow">
                                         <option>Company looking to hire</option>
                                         <option>Professional looking for a role</option>
                                         <option>Other</option>
@@ -575,7 +594,7 @@ const ContactPage = ({ navigate }) => {
                                 </div>
                                 <div>
                                     <label htmlFor="message" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Message</label>
-                                    <textarea id="message" rows="4" required className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-shadow"></textarea>
+                                    <textarea id="message" name="message" rows="4" required className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-shadow"></textarea>
                                 </div>
                                 <div className="p-4 bg-slate-100 dark:bg-slate-900/50 rounded-lg flex items-center justify-between">
                                     <div className="flex items-center">
@@ -662,7 +681,7 @@ const AuditPage = ({ navigate }) => {
             }
         }, 1500);
     };
-    
+   
     const handleReset = () => {
         setAnswers({});
         setRiskScore(0);
@@ -733,7 +752,7 @@ const AuditPage = ({ navigate }) => {
                     ))}
                 </div>
             </section>
-            
+           
             {allQuestionsAnswered && !formSubmitted && (
                 <AnimatedCard>
                 <section id="get-results-audit" className="bg-white dark:bg-slate-800/50 p-8 sm:p-10 rounded-2xl shadow-2xl max-w-2xl mx-auto text-center border border-slate-200 dark:border-slate-800">
