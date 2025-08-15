@@ -651,11 +651,13 @@ const AuditPage = ({ navigate }) => {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const calculateRisk = (e) => {
+    const calculateRisk = async (e) => {
         e.preventDefault();
+        const form = e.target;
+
         if (!formData.name || !formData.email) {
-             const formElement = document.getElementById('get-results-audit');
-            if(formElement && !formElement.querySelector('.form-error')) {
+            const formElement = document.getElementById('get-results-audit');
+            if (formElement && !formElement.querySelector('.form-error')) {
                 const error = document.createElement('p');
                 error.className = 'form-error text-red-500 mt-2';
                 error.textContent = 'Please enter your name and email to see the results.';
@@ -663,8 +665,26 @@ const AuditPage = ({ navigate }) => {
             }
             return;
         }
+
         setIsCalculating(true);
         setFormSubmitted(true);
+
+        // Send form data to Formspree
+        try {
+            const formSpreeData = new FormData(form);
+            await fetch('https://formspree.io/f/mnnzrwyn', {
+                method: 'POST',
+                body: formSpreeData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+        } catch (error) {
+            console.error('Error submitting to Formspree:', error);
+            // Optionally, inform the user that their details couldn't be sent but still show the results.
+        }
+
+        // Calculate and show results after a delay
         let score = 0;
         questions.forEach(q => {
             if (answers[q.id] === true) {
