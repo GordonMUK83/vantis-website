@@ -428,7 +428,7 @@ const SolutionPage = ({ navigate }) => (
                 <h3 className="text-2xl font-bold text-red-600 dark:text-red-500 mb-6">The Old Way: The Hiring Dilemma</h3>
                 <ul className="space-y-4 text-slate-600 dark:text-slate-300">
                     <li className="flex items-start"><X className="text-red-500 h-6 w-6 mr-4 mt-0.5 flex-shrink-0" /><span><strong>High UK Costs:</strong> Face crippling employer NI contributions and rising salary demands that make local hiring unsustainable for growth.</span></li>
-                    <li className="flex items-start"><X className="text-red-500 h-6 w-6 mr-4 mt-0.5 flex-shrink-0" /><span><strong>Contractor Risk:</strong> Carry 100% of the liability for IR35 misclassification, exposing your business to devastating retrospective tax bills.</span></li>
+                    <li className="flex items-start"><X className="text-red-500 h-6 w-6 mr-4 mt-0.5 flex-shrink-0" /><span><strong>Contractor Risk:</strong> Carry 100% of the liability for IR35 misclassification, risking devastating retrospective tax bills.</span></li>
                     <li className="flex items-start"><X className="text-red-500 h-6 w-6 mr-4 mt-0.5 flex-shrink-0" /><span><strong>Admin Burden:</strong> Juggle complex legal checks for every contractor, a significant drain on non-revenue-generating time.</span></li>
                     <li className="flex items-start"><X className="text-red-500 h-6 w-6 mr-4 mt-0.5 flex-shrink-0" /><span><strong>Talent Instability:</strong> Rely on transient contractors with no long-term commitment to your company's success.</span></li>
                 </ul>
@@ -624,13 +624,13 @@ const ContactPage = ({ navigate }) => {
 
 
 const AuditPage = ({ navigate }) => {
-    // This is the IR35 Audit component we built before
     const [answers, setAnswers] = useState({});
     const [riskScore, setRiskScore] = useState(0);
     const [showResults, setShowResults] = useState(false);
     const [isCalculating, setIsCalculating] = useState(false);
     const [formData, setFormData] = useState({ name: '', email: '', company: '' });
     const [formSubmitted, setFormSubmitted] = useState(false);
+    const [showIncompleteWarning, setShowIncompleteWarning] = useState(false);
 
     const questions = [
         { id: 'q1', text: 'Do you direct, supervise, or control how the contractor performs their daily tasks?', weight: 3 },
@@ -642,13 +642,28 @@ const AuditPage = ({ navigate }) => {
         { id: 'q7', text: 'Are they paid a fixed hourly, daily, or monthly rate, similar to an employee?', weight: 1 },
     ];
 
+    const allQuestionsAnswered = Object.keys(answers).length === questions.length;
+
     const handleAnswer = (questionId, answer) => {
         setAnswers(prev => ({ ...prev, [questionId]: answer }));
+        setShowIncompleteWarning(false); // Hide warning when user starts answering again
     };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleShowForm = () => {
+        if (allQuestionsAnswered) {
+            setFormSubmitted(true); // This will now just show the form
+            const formElement = document.getElementById('get-results-audit');
+            if (formElement) {
+                formElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        } else {
+            setShowIncompleteWarning(true);
+        }
     };
 
     const calculateRisk = async (e) => {
@@ -667,12 +682,10 @@ const AuditPage = ({ navigate }) => {
         }
 
         setIsCalculating(true);
-        setFormSubmitted(true);
 
-        // Send form data to Formspree
         try {
             const formSpreeData = new FormData(form);
-            await fetch('https://formspree.io/f/mnnzrwyn', { // <-- THIS URL IS NOW CORRECT
+            await fetch('https://formspree.io/f/mnnzrwyn', {
                 method: 'POST',
                 body: formSpreeData,
                 headers: {
@@ -681,10 +694,8 @@ const AuditPage = ({ navigate }) => {
             });
         } catch (error) {
             console.error('Error submitting to Formspree:', error);
-            // Optionally, inform the user that their details couldn't be sent but still show the results.
         }
 
-        // Calculate and show results after a delay
         let score = 0;
         questions.forEach(q => {
             if (answers[q.id] === true) {
@@ -707,6 +718,7 @@ const AuditPage = ({ navigate }) => {
         setRiskScore(0);
         setShowResults(false);
         setFormSubmitted(false);
+        setShowIncompleteWarning(false);
         setFormData({ name: '', email: '', company: '' });
         const quizElement = document.getElementById('risk-audit-start');
         if (quizElement) {
@@ -741,10 +753,9 @@ const AuditPage = ({ navigate }) => {
     };
 
     const riskInfo = getRiskLevel();
-    const allQuestionsAnswered = Object.keys(answers).length === questions.length;
 
-    const QuizQuestion = ({ question, answer, onAnswer }) => (
-        <div className="bg-white dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-lg hover:shadow-xl transition-all duration-300">
+    const QuizQuestion = ({ question, answer, onAnswer, isUnanswered }) => (
+        <div className={`bg-white dark:bg-slate-800/50 p-6 rounded-2xl border ${isUnanswered ? 'border-red-500' : 'border-slate-200 dark:border-slate-800'} shadow-lg hover:shadow-xl transition-all duration-300`}>
             <p className="text-lg font-medium text-slate-800 dark:text-slate-100 mb-5">{question}</p>
             <div className="flex items-center space-x-4">
                 <button onClick={() => onAnswer(true)} className={`flex-1 py-3 px-4 rounded-lg font-semibold transition-all duration-200 text-base shadow-md ${answer === true ? 'bg-blue-600 text-white ring-2 ring-blue-300 dark:ring-blue-500 scale-105' : 'bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-blue-50 dark:hover:bg-slate-600'}`}>Yes</button>
@@ -767,13 +778,29 @@ const AuditPage = ({ navigate }) => {
                 <div className="max-w-3xl mx-auto grid grid-cols-1 gap-8">
                     {questions.map((q, index) => (
                         <AnimatedCard key={q.id} delay={200 + index * 50}>
-                            <QuizQuestion question={`${index + 1}. ${q.text}`} answer={answers[q.id]} onAnswer={(answer) => handleAnswer(q.id, answer)} />
+                            <QuizQuestion 
+                                question={`${index + 1}. ${q.text}`} 
+                                answer={answers[q.id]} 
+                                onAnswer={(answer) => handleAnswer(q.id, answer)}
+                                isUnanswered={showIncompleteWarning && answers[q.id] === undefined}
+                            />
                         </AnimatedCard>
                     ))}
                 </div>
             </section>
            
-            {allQuestionsAnswered && !formSubmitted && (
+            {!formSubmitted && (
+                <AnimatedCard>
+                    <div className="text-center">
+                        {showIncompleteWarning && <p className="text-red-500 font-semibold mb-4">Please answer all questions to see your results.</p>}
+                        <button onClick={handleShowForm} className="bg-gradient-to-br from-blue-600 to-indigo-600 text-white font-bold py-4 px-10 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105 text-lg shadow-lg hover:shadow-xl hover:shadow-blue-600/30">
+                            Get My Results
+                        </button>
+                    </div>
+                </AnimatedCard>
+            )}
+
+            {formSubmitted && !showResults && (
                 <AnimatedCard>
                 <section id="get-results-audit" className="bg-white dark:bg-slate-800/50 p-8 sm:p-10 rounded-2xl shadow-2xl max-w-2xl mx-auto text-center border border-slate-200 dark:border-slate-800">
                     <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-3">Don't Look Away. See Your Results.</h2>
@@ -800,7 +827,9 @@ const AuditPage = ({ navigate }) => {
                         <div className="text-center mt-8"><button onClick={handleReset} className="bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold py-2.5 px-6 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors duration-300 inline-flex items-center shadow-sm"><RefreshCw className="mr-2 h-4 w-4" />Start Over</button></div>
                     </div>
                     <div className="mt-12 text-center">
-                        <button onClick={() => navigate('/solution')} className="bg-gradient-to-br from-green-500 to-emerald-500 text-white font-bold py-4 px-10 rounded-xl hover:from-green-600 hover:to-emerald-600 transition-all duration-300 inline-block transform hover:scale-105 text-lg shadow-lg hover:shadow-xl hover:shadow-green-500/30">Learn How Vantis Eliminates This Risk</button>
+                        <button onClick={() => navigate('/contact')} className="bg-gradient-to-br from-green-500 to-emerald-500 text-white font-bold py-4 px-10 rounded-xl hover:from-green-600 hover:to-emerald-600 transition-all duration-300 inline-block transform hover:scale-105 text-lg shadow-lg hover:shadow-xl hover:shadow-green-500/30">
+                            Contact Us to De-Risk Your Hiring
+                        </button>
                     </div>
                 </section>
                 </AnimatedCard>
