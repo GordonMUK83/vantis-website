@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ShieldCheck, AlertTriangle, Mail, User, Building, ArrowRight, Loader2, RefreshCw, Menu, X, Briefcase, Users, BarChart2, Info, Phone, Star, TrendingUp, Code, Palette, Edit, Target, Zap, Handshake, Globe, TrendingDown, ChevronsRight, Building2, Rocket, Scale } from 'lucide-react';
+import { ShieldCheck, AlertTriangle, Mail, User, Building, ArrowRight, Loader2, RefreshCw, Menu, X, Briefcase, Users, BarChart2, Info, Phone, Star, TrendingUp, Code, Palette, Edit, Target, Zap, Handshake, Globe, TrendingDown, ChevronsRight, Building2, Rocket, Scale, Award } from 'lucide-react';
 
 // --- Helper Components ---
 const AnimatedCard = ({ children, className, delay = 0 }) => {
@@ -192,6 +192,33 @@ const Footer = ({ navigate }) => (
 
 // --- Page Implementations ---
 
+const KeyStatsSection = () => {
+    const stats = [
+        { icon: Scale, value: "100%", label: "IR35 Compliant", description: "We act as the Employer of Record, absorbing all compliance risk." },
+        { icon: Award, value: "Top 5%", label: "Vetted Talent", description: "Access an elite pool of professionals rigorously vetted for the UK market." },
+        { icon: TrendingDown, value: "60%", label: "Cost Saving", description: "Reduce your payroll costs significantly compared to UK-based hiring." }
+    ];
+
+    return (
+        <div className="bg-white dark:bg-vantis-black/50 py-16 sm:py-24">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="grid md:grid-cols-3 gap-8 text-center">
+                    {stats.map((stat, index) => (
+                        <AnimatedCard key={index} delay={index * 150}>
+                            <div className="p-8 bg-slate-50 dark:bg-slate-800/50 rounded-2xl shadow-lg border border-slate-200/50 dark:border-slate-800/50">
+                                <stat.icon className="mx-auto h-10 w-10 text-vantis-blue mb-4" strokeWidth={1.5} />
+                                <p className="text-4xl font-bold text-vantis-black dark:text-white">{stat.value}</p>
+                                <p className="text-lg font-semibold text-slate-700 dark:text-slate-200 mt-1">{stat.label}</p>
+                                <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">{stat.description}</p>
+                            </div>
+                        </AnimatedCard>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+};
+
 const ScrollytellingSection = () => {
     const services = [
         {icon: Star, label: 'Social Media', text: 'Amplify your brand voice. Our social media experts create engaging content that converts followers into customers.'},
@@ -201,7 +228,7 @@ const ScrollytellingSection = () => {
         {icon: Palette, label: 'Graphic Design', text: 'Captivate your audience. Get stunning visuals that define your brand and make a lasting impression.'},
         {icon: Code, label: 'Tech Specialists', text: 'Build with the best. Access skilled developers and tech experts to bring your digital products to life.'},
     ];
-
+   
     const [activeIndex, setActiveIndex] = useState(0);
     const containerRef = useRef(null);
 
@@ -231,7 +258,10 @@ const ScrollytellingSection = () => {
 
     return (
         <div ref={containerRef} className="relative hidden md:block" style={{ height: '300vh' }}>
-            <div className="sticky top-0 h-screen flex items-center">
+            <div className="sticky top-0 h-screen flex flex-col justify-center">
+                 <div className="container mx-auto text-center mb-16">
+                    <h2 className="text-3xl sm:text-4xl font-extrabold text-vantis-black dark:text-white tracking-tighter">A Spectrum of Expertise</h2>
+                </div>
                 <div className="container mx-auto grid grid-cols-2 gap-16 items-center">
                     <div className="text-left relative h-48">
                         {services.map((service, index) => (
@@ -285,13 +315,18 @@ const HomePage = ({ navigate }) => {
                     </AnimatedCard>
                 </section>
             </div>
+            
+            <KeyStatsSection />
 
             {/* Scrollytelling Section for Desktop */}
             <ScrollytellingSection />
-
+           
             {/* Simpler Grid for Mobile */}
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 md:hidden">
                  <AnimatedCard className="max-w-5xl mx-auto my-16">
+                    <div className="text-center mb-12">
+                        <h2 className="text-3xl sm:text-4xl font-extrabold text-vantis-black dark:text-white tracking-tighter">A Spectrum of Expertise</h2>
+                    </div>
                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 text-center">
                         {[
                             {icon: Star, label: 'Social Media'},
@@ -540,12 +575,12 @@ const AboutPage = ({ navigate }) => (
 
 const ContactPage = ({ navigate }) => {
     const [submitted, setSubmitted] = useState(false);
-
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         const form = e.target;
         const formData = new FormData(form);
-
+        
         try {
             const response = await fetch('https://formspree.io/f/xeozdnnp', {
                 method: 'POST',
@@ -720,7 +755,7 @@ const AuditPage = ({ navigate }) => {
             }
         }, 1500);
     };
-
+   
     const handleReset = () => {
         setAnswers({});
         setRiskScore(0);
@@ -796,7 +831,7 @@ const AuditPage = ({ navigate }) => {
                     ))}
                 </div>
             </section>
-
+           
             {!formSubmitted && (
                 <AnimatedCard>
                     <div className="text-center mt-8">
